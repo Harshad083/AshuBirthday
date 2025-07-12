@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>❣️😇 Form Khadus ..!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #ffccff, #ccffcc);
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .Bday-date {
+      position: absolute;
+      top: 15px;
+      font-size: 1.2em;
+      text-align: center;
+      width: 100%;
+      z-index: 2;
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3.5em;
+      font-weight: normal;
+      color: #ff4d4d;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      z-index: 2;
+      animation: glow 2s infinite alternate;
+      text-align: center;
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); }
+      100% { text-shadow: 3px 3px 10px rgba(255, 77, 77, 0.7); }
+    }
+
+    .heart-frame {
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+      animation: heartbeat 1.5s infinite;
+    }
+
+    .photo {
+      width: 340px;
+      height: 340px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 10px solid white;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .quote-container {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 1.6em;
+      font-style: italic;
+      color: #444;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+      max-width: 90%;
+    }
+
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .heart-frame {
+        width: 250px;
+        height: 250px;
+      }
+
+      .photo {
+        width: 230px;
+        height: 230px;
+      }
+
+      .quote-container {
+        font-size: 1.2em;
+        margin-top: 20px;
+      }
+
+      .Bday-date {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="Bday-date">BDay Date: 09/08/2006 👼🏻</div>
+  <h1>Happy Birthday, Ashwini 🤍...! 🎉💝</h1>
+  <div class="heart-frame">
+    <img src="img/web photo.jpg" alt="Best Friend" class="photo"/>
+  </div>
+  <div class="quote-container" id="quote">Loading quotes...</div>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const emojis = ['🍁', '📀', '🌼', '🌸','😘'];
+
+      class Particle {
+        constructor(emoji) {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 20 + 10;
+          this.velY = Math.random() * 1.5 + 0.5;
+          this.velX = Math.random() * 0.5 - 0.25;
+          this.emoji = emoji;
+        }
+        update() {
+          this.y += this.velY;
+          this.x += this.velX;
+          if (this.y > canvas.height) this.y = -this.size;
+          if (this.x > canvas.width || this.x < 0) this.x = Math.random() * canvas.width;
+        }
+        draw() {
+          ctx.font = `${this.size}px Arial`;
+          ctx.fillText(this.emoji, this.x, this.y);
+        }
+      }
+
+      for (let i = 0; i < 40; i++) {
+        particles.push(new Particle(emojis[Math.floor(Math.random() * emojis.length)]));
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      const quotes = [
+        "You make every day brighter with your smile..!, 🌟",
+        "You are the brighter one ,& Happieness of mine 🎂",
+        "May your birthday be as special as you are for Me! 💖",
+        "Loving You To The Power of Infinity, 🤍✨",
+        "Enjoy Your Special Day & Beautiful Life, 🎊🎀🥳",
+        "Ooyee,..! Last thing Kabhi Tension Mat lena I'm Always Here for you,🍫🫶🏽 "
+      ];
+
+      let quoteIndex = 0;
+      const quoteEl = document.getElementById("quote");
+      function changeQuote() {
+        quoteEl.textContent = quotes[quoteIndex];
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+      }
+      changeQuote();
+      setInterval(changeQuote, 3000);
+    });
+  </script>
+</body>
+</html>
